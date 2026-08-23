@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CadenceX Solutions — Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d10;
+    --ink:#f2f1ec;
+    --muted:#8c8d95;
+    --line:#22242a;
+    --blue:#3d5aff;
+    --amber:#ff8a24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    height:100%;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  /* blueprint grid backdrop */
+  .grid-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(61,90,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,90,255,0.06) 1px, transparent 1px);
+    background-size:42px 42px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 85%);
+            mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, #000 40%, transparent 85%);
+  }
+  .glow{
+    position:fixed; top:-15%; left:50%; transform:translateX(-50%);
+    width:1000px; height:800px;
+    background:radial-gradient(ellipse, rgba(255,138,36,0.10) 0%, rgba(255,138,36,0) 65%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap{
+    position:relative; z-index:2;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:7vh 6vw 5vh;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:0.26em; text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:34px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow::before, .eyebrow::after{ content:''; width:26px; height:1px; background:var(--line); }
+  /* ---- Signature element: stage/truss under construction, blueprint draw-in ---- */
+  .rig{
+    width:min(560px, 84vw);
+    margin-bottom:14px;
+  }
+  .rig svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .rig-line{
+    fill:none;
+    stroke:var(--muted);
+    stroke-width:1.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 6s ease-in-out infinite;
+  }
+  .rig-line.accent{ stroke:var(--blue); }
+  .rig-line.warn{ stroke:var(--amber); }
+  @keyframes draw{
+    0%{ stroke-dashoffset:1400; }
+    30%{ stroke-dashoffset:0; }
+    85%{ stroke-dashoffset:0; }
+    100%{ stroke-dashoffset:1400; }
+  }
+  .rig-node{
+    fill:var(--bg);
+    stroke:var(--amber);
+    stroke-width:1.6;
+    opacity:0;
+    animation:appear 6s ease-in-out infinite;
+  }
+  @keyframes appear{
+    0%{ opacity:0; }
+    30%{ opacity:1; }
+    85%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+  .crane{
+    animation:lift 3.6s ease-in-out infinite;
+    transform-origin:50% 50%;
+  }
+  @keyframes lift{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--amber);
+    padding:6px 14px 6px 10px;
+    border:1px solid rgba(255,138,36,0.35);
+    border-radius:100px;
+    margin-bottom:30px;
+  }
+  .tag .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--amber);
+    animation:blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+  .brand{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(15px, 2vw, 18px);
+    letter-spacing:0.02em;
+    margin-bottom:6px;
+  }
+  .brand em{ font-style:normal; color:var(--blue); }
+  .brand-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:50px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(46px, 9.5vw, 108px);
+    line-height:0.96;
+    letter-spacing:-0.02em;
+    margin-bottom:24px;
+  }
+  h1 .soon{ color:var(--muted); }
+  .tagline{
+    max-width:540px;
+    font-size:clamp(15px, 1.6vw, 18px);
+    line-height:1.65;
+    color:var(--muted);
+    margin-bottom:56px;
+  }
+  .divider{
+    width:1px; height:40px;
+    background:linear-gradient(180deg, transparent, var(--line), transparent);
+    margin-bottom:38px;
+  }
+  .contact{
+    display:flex; flex-direction:column; align-items:center; gap:16px;
+  }
+  .contact-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.24em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .contact-numbers{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+  }
+  .contact-number{
+    display:inline-flex; align-items:center; gap:12px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(19px, 2.6vw, 25px);
+    color:var(--ink);
+    text-decoration:none;
+    padding:13px 26px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    transition:border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  }
+  .contact-number:hover, .contact-number:focus-visible{
+    border-color:var(--blue);
+    background:rgba(61,90,255,0.06);
+    transform:translateY(-2px);
+  }
+  .contact-number:focus-visible{ outline:2px solid var(--blue); outline-offset:4px; }
+  .contact-number svg{ width:18px; height:18px; stroke:var(--blue); flex-shrink:0; }
+  .services{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    max-width:560px;
+    margin-bottom:44px;
+  }
+  .services span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    color:var(--muted);
+    padding:6px 14px;
+    border:1px solid var(--line);
+    border-radius:100px;
+  }
+  .contact-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:48px; height:48px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    color:var(--ink);
+    text-decoration:none;
+    transition:border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  }
+  .contact-icon svg{ width:18px; height:18px; stroke:var(--blue); }
+  .contact-icon:hover, .contact-icon:focus-visible{
+    border-color:var(--blue);
+    background:rgba(61,90,255,0.06);
+    transform:translateY(-2px);
+  }
+  .contact-icon:focus-visible{ outline:2px solid var(--blue); outline-offset:4px; }
+  .notify{
+    margin-top:48px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .notify-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.24em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .notify-form{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .notify-form input[type="email"]{
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:12px 20px;
+    width:260px;
+    outline:none;
+    transition:border-color 0.25s ease;
+  }
+  .notify-form input[type="email"]::placeholder{ color:var(--muted); }
+  .notify-form input[type="email"]:focus{ border-color:var(--blue); }
+  .notify-form button{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:var(--bg);
+    background:var(--ink);
+    border:none;
+    border-radius:100px;
+    padding:12px 24px;
+    cursor:pointer;
+    transition:background 0.25s ease, transform 0.25s ease;
+  }
+  .notify-form button:hover{ background:var(--amber); transform:translateY(-2px); }
+  .social-row{
+    display:flex;
+    gap:12px;
+    margin-top:36px;
+  }
+  footer{
+    position:relative; z-index:2;
+    text-align:center;
+    padding:0 6vw 6vh;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.08em;
+    color:var(--muted);
+  }
+  footer a{ color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line); }
+  footer a:hover{ color:var(--ink); border-color:var(--muted); }
+  @media (max-width:480px){
+    .contact-number{ font-size:18px; padding:12px 20px; gap:9px; }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <main class="wrap">
+    <p class="eyebrow">Event &amp; Experience Solutions</p>
+    <!-- Signature element: a stage rig being assembled, blueprint-style -->
+    <div class="rig" aria-hidden="true">
+      <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- ground line -->
+        <path class="rig-line" d="M20 190 H400" style="animation-delay:0.1s"/>
+        <!-- left truss tower -->
+        <path class="rig-line accent" d="M70 190 L70 60 M70 60 L90 60 M70 90 L90 90 M70 120 L90 120 M70 150 L90 150 M90 60 L90 190" style="animation-delay:0.3s"/>
+        <!-- right truss tower -->
+        <path class="rig-line accent" d="M330 190 L330 60 M330 60 L350 60 M330 90 L350 90 M330 120 L350 120 M330 150 L350 150 M350 60 L350 190" style="animation-delay:0.5s"/>
+        <!-- top horizontal truss (partially built, dashed = pending) -->
+        <path class="rig-line" d="M90 60 H220" style="animation-delay:0.9s"/>
+        <path class="rig-line" d="M220 60 H350" stroke-dasharray="4 8" style="animation:none; stroke-dashoffset:0; opacity:0.45;"/>
+        <!-- lighting fixtures hanging -->
+        <path class="rig-line warn" d="M120 60 L120 78 M150 60 L150 78 M180 60 L180 78" style="animation-delay:1.2s"/>
+        <circle class="rig-node" cx="120" cy="82" r="5" style="animation-delay:1.6s"/>
+        <circle class="rig-node" cx="150" cy="82" r="5" style="animation-delay:1.8s"/>
+        <circle class="rig-node" cx="180" cy="82" r="5" style="animation-delay:2s"/>
+        <!-- crane lifting the next truss section -->
+        <g class="crane">
+          <path class="rig-line" d="M250 20 L250 130 M250 20 L300 20 M300 20 L300 45" style="animation-delay:1.4s"/>
+          <rect class="rig-node" x="288" y="45" width="24" height="14" rx="2" style="animation-delay:2.4s"/>
+        </g>
+        <!-- crate / equipment on ground -->
+        <path class="rig-line warn" d="M180 190 L180 165 L215 165 L215 190" style="animation-delay:2.1s"/>
+        <path class="rig-line warn" d="M180 175 H215" style="animation-delay:2.3s"/>
+      </svg>
+    </div>
+    <div class="tag"><span class="dot"></span> Build in progress</div>
+    <p class="brand">CADENCE<em>X</em> SOLUTIONS PVT. LTD.</p>
+    <p class="brand-sub">Setting the stage, one build at a time</p>
+    <h1>Coming<br><span class="soon">Soon</span></h1>
+    <p class="tagline">
+      Our crew is on-site putting the rig together. CadenceX is under construction online too — reach out directly while we finish the build.
+    </p>
+    <div class="services">
+      <span>Corporate Events</span>
+      <span>Exhibitions</span>
+      <span>Weddings</span>
+      <span>Stage &amp; Rigging</span>
+    </div>
+    <div class="divider"></div>
+    <div class="contact">
+      <p class="contact-label">For Inquiries</p>
+      <div class="contact-numbers">
+        <a class="contact-number" href="tel:+919582558682">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          +91 95825 58682
+        </a>
+        <a class="contact-number" href="tel:+917503353799">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          +91 75033 53799
+        </a>
+        <a class="contact-icon" href="https://wa.me/919582558682" aria-label="Chat on WhatsApp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21l1.65-4.95A9 9 0 1 1 8.05 19.35L3 21z"/>
+            <path d="M8.5 9.5c0 3 2.5 6 6 6"/>
+          </svg>
+        </a>
+        <a class="contact-icon" href="mailto:infocadencex@gmail.com" aria-label="Email us">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>
+            <path d="M3 6l9 7 9-7"/>
+          </svg>
+        </a>
+      </div>
+      <div class="notify">
+        <p class="notify-label">Get notified at launch</p>
+        <form class="notify-form" onsubmit="return false;">
+          <input type="email" placeholder="you@email.com" required>
+          <button type="submit">Notify me</button>
+        </form>
+      </div>
+      <div class="social-row">
+        <a class="contact-icon" href="https://instagram.com/cadencex.in" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1"/>
+          </svg>
+        </a>
+        <a class="contact-icon" href="https://linkedin.com/company/cadencex" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <path d="M7 10v7M7 7v.01M12 17v-4.5a2.5 2.5 0 0 1 5 0V17M12 10v7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>Serving Delhi NCR &amp; beyond &nbsp;·&nbsp; Est. 2026</p>
+    <p style="margin-top:6px;">&copy; 2026 CadenceX Solutions Pvt. Ltd. &nbsp;·&nbsp; <a href="mailto:infocadencex@gmail.com">infocadencex@gmail.com</a> &nbsp;·&nbsp; cadencex.in</p>
+  </footer>
+</body>
+</html>
